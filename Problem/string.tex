@@ -1,0 +1,189 @@
+\documentclass[uplatex,dvipdfmx,11pt]{jsarticle}
+% パッケージの読み込み
+\usepackage{amsthm}        % 定理環境
+\usepackage{amsmath}       % 数式関連
+\usepackage{amssymb}       % 数学記号関連
+\usepackage{bm}            % 太字記号（ベクトルなど）
+\usepackage[dvipdfmx]{graphicx}  % 画像挿入
+\usepackage{tcolorbox}     % カスタムボックス
+\usepackage{ascmac}        % 数式の枠線を含む環境
+\usepackage{tikz}          % 図形描画
+\usepackage{fancybox}      % 囲み線
+\usepackage[legacycolonsymbols]{mathtools}  % 数式補完
+
+% LaTeX内で使用するライブラリの設定
+\tcbuselibrary{breakable, skins, theorems}  % tcolorbox用
+\usetikzlibrary{intersections, calc, arrows.meta}  % TikZ用
+
+% 数式の表示設定（常にdisplaystyle）
+\everymath{\displaystyle}
+
+% ページ設定
+\pagestyle{plain}         % ページスタイル
+\parindent = 0pt          % 段落インデントなし
+
+% マージン、ページの高さ、ヘッダー設定
+\setlength{\textwidth}{\fullwidth}  % テキスト領域の幅
+\setlength{\textheight}{40\baselineskip}  % テキスト領域の高さ
+\addtolength{\textheight}{\topskip}  % 余白調整
+\setlength{\voffset}{-0.2in}  % 上余白調整
+\setlength{\topmargin}{0pt}  % 上マージン0
+\setlength{\headheight}{0pt}  % ヘッダー高さ0
+\setlength{\headsep}{0pt}    % ヘッダー間隔0
+
+% 定理環境設定
+\theoremstyle{definition}   % 定義スタイル
+\newtheorem{definition}{定義}[section]  % 定義
+\newtheorem{theorem}{定理}[section]    % 定理
+\newtheorem{proposition}{命題}[section]  % 命題
+\newtheorem{example}{例}[section]  % 例
+\newtheorem{lemma}{補題}[section]  % 補題
+\newtheorem{remark}{注意}[section]  % 注意
+\newtheorem{question}{問}[section]  % 問
+\newtheorem{axiom}{公理}[section]  % 公理
+\newtheorem{corollary}{系}[section]  % 系
+\newtheorem{answer}{解}[section]  % 解
+\newtheorem{anotheranswer}{別解}[section]  % 別解
+
+% 番号なし定理環境
+\newtheorem*{answer*}{解}  % 番号なし解
+\newtheorem*{anotheranswer*}{別解}  % 番号なし別解
+\newtheorem*{definition*}{定義}  % 番号なし定義
+\newtheorem*{theorem*}{定理}    % 番号なし定理
+\newtheorem*{proposition*}{命題}  % 番号なし命題
+\newtheorem*{example*}{例}  % 番号なし例
+\newtheorem*{lemma*}{補題}  % 番号なし補題
+\newtheorem*{remark*}{注意}  % 番号なし注意
+\newtheorem*{question*}{問}  % 番号なし問
+\newtheorem*{axiom*}{公理}  % 番号なし公理
+\newtheorem*{corollary*}{系}  % 番号なし系
+
+% カスタムtcolorbox設定
+\newtcolorbox{mybox}[2][]{
+  enhanced,  % 強化されたカスタムボックス
+  colframe = green!35!black,  % 枠線色
+  colback = white,  % 背景色
+  title = #2,  % ボックスタイトル
+  fonttitle = \bfseries,  % タイトルを太字
+  breakable = true,  % ボックス内折り返しを許可
+  coltitle = black,  % タイトル文字色
+  attach boxed title to top left = {xshift=5mm, yshift=-3mm},  % タイトル位置調整
+  boxed title style = {colframe = green!35!black, colback = white},  % タイトルスタイル
+  top = 4mm,  % 上余白
+  #1  % 追加オプション
+}
+
+% 他のカスタムtcolorbox（youbox）
+\newtcolorbox{youbox}[2][]{
+  enhanced,
+  colframe = white,
+  colback = white,
+  title = #2,
+  fonttitle = \bfseries,
+  breakable = true,
+  coltitle = black,
+  attach boxed title to top left = {xshift=5mm, yshift=-3mm},
+  boxed title style = {colframe = green!35!black, colback = white},
+  top = 4mm,
+  #1
+}
+
+% 証明環境の日本語化
+\renewcommand{\proofname}{\textbf{証明}}
+
+% 演算記号用のコマンド定義
+\newcommand{\divergence}{\mathrm{div}\,}  % 発散
+\newcommand{\grad}{\mathrm{grad}\,}      % 勾配
+\newcommand{\rot}{\mathrm{rot}\,}        % 回転
+
+% ハイパーリンク設定
+\usepackage[dvipdfm,
+  colorlinks=false,  % 色付きリンク無効
+  bookmarks=true,  % 目次のブックマーク
+  bookmarksnumbered=false,  % 目次番号なし
+  pdfborder={0 0 0},  % リンク枠線なし
+  bookmarkstype=toc]  % 目次リンク
+  {hyperref}
+
+% A4余白設定
+\usepackage[a4paper,margin=25mm]{geometry}
+
+% 和文フォント指定（otfパッケージ）
+\usepackage[deluxe]{otf}
+\renewcommand{\kanjifamilydefault}{\gtdefault}  % ゴシック体固定
+
+% 欧文フォント指定
+\usepackage{mathptmx}  % Timesフォント
+
+% ドキュメントのタイトル、著者、日付設定
+\title{タイトル}  % タイトル
+\author{古寺爽楽  \thanks{芝浦工業大学\ システム理工学部\ 数理科学科}\\ {学籍番号：BV24044}}  % 著者
+\date{\today}  % 日付（作成日）
+
+\begin{document}
+% 問題文（TeX）
+\noindent
+\textbf{問題}
+
+\medskip
+初期関数を $f_0(x)=x^{12}$ とする．
+
+\medskip
+次の 4 つの操作を定める．
+\begin{equation*}
+\begin{aligned}
+D(f)(x)&=\frac{d}{dx}f(x),\quad
+I(f)(x)=\int_0^x f(t)\,dt,\quad
+L(f)(x)=f(2x),\quad
+R(f)(x)=f\!\left(\frac{x}{2}\right).
+\end{aligned}
+\end{equation*}
+
+\medskip
+文字列
+\begin{equation*}
+T=t_1t_2\cdots t_M \qquad (t_i\in\{D,I,L,R\})
+\end{equation*}
+を考える．
+$f_T$ を「$f_0$ に $T$ を左から順に適用した結果」とする．
+例えば
+\begin{equation*}
+T=DL \Longrightarrow f_{DL}=L(D(f_0)).
+\end{equation*}
+
+\medskip
+記号の意味は次のとおり．
+\begin{itemize}
+  \item $D^a$ ：$D$ を $a$ 回適用する．
+  \item $(U)^q$ ：操作列 $U$ を $q$ 回連結する．
+\end{itemize}
+
+\medskip
+次の操作列 $S$ を考える．
+\begin{equation*}
+S=
+\bigl(D^4L^7I^4R^7\bigr)^{97}
+\bigl(I^3R^5D^3L^5\bigr)^{103}
+L^2D^5R
+\end{equation*}
+
+$S$ を $f_0$ に左から順に適用して得る関数を $f_S$ とする．
+最終形は単項式で，
+\begin{equation*}
+f_S(x)=\frac{A}{2^B}x^K
+\end{equation*}
+と書けることが保証される．
+$A$ を奇数として $A,B,K$ を求めよ．
+
+\medskip
+\textbf{答え}
+\begin{equation*}
+f_S(x)=\frac{1485}{2^{4238}}x^7
+\end{equation*}
+したがって
+\begin{equation*}
+A=1485,\qquad B=4238,\qquad K=7
+\end{equation*}
+である．
+
+\end{document}
