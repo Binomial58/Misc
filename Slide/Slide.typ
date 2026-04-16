@@ -5,8 +5,14 @@
 #import "@preview/numbly:0.1.0": numbly
 
 #let accent = rgb("#0f766e")
+#let accent-deep = rgb("#134e4a")
 #let accent-soft = rgb("#dff5f1")
+#let accent-pale = rgb("#eefaf7")
+#let warm-soft = rgb("#fff3e8")
 #let surface = rgb("#fbfffe")
+#let text-strong = rgb("#102027")
+#let text-soft = rgb("#3c5258")
+
 #let theorem-fill = rgb("#edf7f5")
 #let remark-fill = rgb("#fff1e8")
 
@@ -19,18 +25,77 @@
 #let proof = thmproof("proof", "Proof", base: "theorem")
 #let Proposition = thmbox("Proposition", "Prop", fill: theorem-fill)
 
-#let lead-card(title, body) = block(
+#let lead-card(title, body, fill: accent-soft, stroke-color: accent) = block(
   width: 100%,
-  inset: 1.1em,
-  radius: .4em,
-  fill: accent-soft,
-  stroke: (left: .28em + accent),
+  inset: 1.05em,
+  radius: .55em,
+  fill: fill,
+  stroke: (left: .28em + stroke-color),
   [
-    #set text(fill: rgb("#12312d"))
+    #set text(fill: text-strong)
     #text(weight: "semibold")[#title]
-
-    #v(.45em)
+    #v(.4em)
     #body
+  ],
+)
+
+#let soft-card(title, body) = block(
+  width: 100%,
+  inset: .9em,
+  radius: .45em,
+  fill: white,
+  stroke: rgb("#d7ece8"),
+  [
+    #set text(fill: text-strong)
+    #text(weight: "semibold", fill: accent-deep)[#title]
+    #v(.28em)
+    #set text(size: 0.95em, fill: text-soft)
+    #body
+  ],
+)
+
+#let key-point(title, body) = block(
+  width: 100%,
+  inset: .9em,
+  radius: .45em,
+  fill: accent-pale,
+  stroke: none,
+  [
+    #text(weight: "semibold", fill: accent-deep)[#title]
+    #v(.25em)
+    #body
+  ],
+)
+
+#let section-lead(kicker, body) = [
+  #text(size: .78em, weight: "semibold", fill: accent)[#kicker]
+  #v(.2em)
+  #set text(size: 1.03em)
+  #body
+]
+
+#let schedule-item(day, body) = [
+  #box(
+    inset: (x: .5em, y: .18em),
+    radius: 1em,
+    fill: accent-soft,
+    stroke: none,
+    text(weight: "semibold", fill: accent-deep)[#day],
+  )
+  #h(.55em)
+  #body
+]
+
+#let topic-bubble(label, fill: accent-soft) = box(
+  width: 8.4em,
+  height: 8.4em,
+  inset: .75em,
+  radius: 50%,
+  fill: fill,
+  stroke: 1pt + rgb("#c9e7e1"),
+  align(center + horizon)[
+    #set text(size: .92em, weight: "semibold", fill: accent-deep)
+    #label
   ],
 )
 
@@ -39,14 +104,14 @@
   config-colors(
     primary: accent,
     primary-light: accent-soft,
-    secondary: rgb("#153c44"),
+    secondary: accent-deep,
     neutral-lightest: surface,
-    neutral-darkest: rgb("#102027"),
+    neutral-darkest: text-strong,
   ),
   footer: self => self.info.institution,
   config-info(
     title: [数理科学研究会の紹介],
-    author: [古寺爽楽 （数理科学研究会3年）],
+    author: [古寺爽楽（数理科学研究会 3 年）],
     date: [April 20, 2026],
     institution: [数理科学研究会],
   ),
@@ -56,157 +121,333 @@
 #set text(
   font: ("Noto Sans CJK JP", "IPAexGothic", "IPAPGothic"),
   lang: "ja",
+  fill: text-strong,
 )
-#set par(justify: true, leading: 0.75em)
+#set par(justify: true, leading: 0.72em)
 
 #title-slide()
 
-#slide(title: [数理研って何？])[
-  数学やその周辺のことに興味がある人，好きな人，
-  勉強頑張ってみたいかも，という人たちが集まるサークルです．
+#slide(title: [数理科学研究会とは])[
+  #section-lead(
+    [どんなサークル？],
+    [数理科学分野に興味がある人，好きな人，勉強を頑張りたい人が集まるサークル],
+  )
+
+  #v(.9em)
+  #align(center)[
+    #grid(
+      columns: 3,
+      gutter: .9em,
+      topic-bubble([数学]), topic-bubble([物理], fill: accent-pale), topic-bubble([プログラミング], fill: warm-soft),
+    )
+  ]
+
+
 ]
 
 #slide(title: [どんなことしてるの？])[
-  1. 週 1 の部会
-  #list(
-    [2025 年度前期は毎週月曜 6 限に集まります．],
-    [教室は 5 限から予約するつもりなので，早めに集まって何かしてもらってても OK です．],
-    [連絡事項の共有や，勉強（研究）の進捗報告，イベントの決めごとなどをします．],
-    [基本的に参加してほしいです．],
-    [欠席の場合は連絡ください．],
+  #section-lead(
+    [主な活動],
+    [数理研の活動は，定例の部会を軸に，発表・勉強・イベントなどがあります．],
   )
 
   #v(.8em)
-  2. 大宮祭，芝浦祭での発表
-  #list(
-    [自分なりに勉強したこと，研究したことなどを発表します．],
-    [自分の興味があるトピックを自分なりに掘り進めていく感じです．],
-    [最初は悩み満載かと思いますが，上の学年もお手伝いします．],
-    [LaTeX での資料作成必須です．],
-    [過去の資料が数理研の HP から見られます．],
-    [1 年生は芝浦祭からでよいです（もちろん大宮祭で発表したい人がいれば歓迎）．],
+  #grid(
+    columns: 2,
+    gutter: .8em,
+    soft-card(
+      [日常の活動],
+      [
+        - 部会
+        - 勉強会・輪講
+        - ノートまとめ
+      ],
+    ),
+    soft-card(
+      [イベント・発表],
+      [
+        - 大宮祭・芝浦祭での発表
+        - 懸賞問題の作成
+        - 夏合宿（春合宿）
+        - コンテスト系
+      ],
+    ),
   )
 ]
 
-#slide(title: [どんなことしてるの？])[
-  3. 懸賞問題作成
-  #list(
-    [大宮祭，芝浦祭でお客さんに解いてもらいます．],
-    [学祭前に活発化します．],
-    [難しい知識を，というよりは頭ひねる系の．],
-  )
+#slide(title: [部会])[
+  #grid(
+    columns: (1.25fr, 1fr),
+    gutter: .8em,
+    [
+      #section-lead(
+        [定例で集まる時間],
+        [部員が教室に集まって部会を行います．
 
-  #v(.8em)
-  4. 勉強会
-  #list(
-    [自分の勉強したい本や分野でメンバーを募ってお勉強します．],
-    [授業の勉強などでも可です．],
-    [わからないところは共有して，理解している人に助けてもらいましょう．],
-    [上の学年もお手伝いしますが，まずはみんなでノートや本とにらめっこしましょう．],
-    [基本的には部会の時間を利用してもらえれば良いですが，他の時間に集まっても OK です．],
-  )
-]
+          連絡共有だけでなく，勉強や研究の進捗報告，イベントの相談もここで進めます．],
+      )
 
-#slide(title: [どんなことしてるの？])[
-  5. ノートまとめ
-  #list(
-    [LaTeX できるようになってほしいなあ...という気持ちからです．],
-    [やらないと忘れますし，慣れが必須です．],
-    [添削もします（予定）．],
-    [微積，数学基礎あたりがよさそう（線形代数 I は行列ばっかで大変そう）．],
-  )
-
-  #v(.8em)
-  6. 夏合宿（春合宿）
-  #list(
-    [夏休みに合宿を企画しています．],
-    [まだ何も決まっていません．],
-    [勉強するだけじゃなくて，親睦を深める目的強め．],
-    [何か希望があればぜひ．],
-    [春合宿については，まだ実施した事例がないですが，参加希望者多数なら検討します．],
-  )
-
-  #v(.8em)
-  7. コンテスト系
-  #list(
-    [もし外部のコンテスト（サイエンスインカレなど）に挑戦したい，という方がいれば応援します．],
+      #v(.75em)
+      - 2026 年度前期は毎週月曜 6 限
+      - 教室は 5 限から予約予定
+      - 欠席時は連絡があれば大丈夫
+      - 基本的には参加必須
+    ],
+    [
+      #lead-card(
+        [この時間でやること],
+        [
+          - 連絡事項の共有
+          - 進捗報告
+          - 勉強や研究の相談
+          - 行事の方針決め
+        ],
+      )
+    ],
   )
 ]
 
-#slide(title: [数理研に入って嬉しいこと（？）])[
-  1. 数理科学科のひとがいっぱいいます！
-  #list(
-    [数理の人数は芝浦でいちばん多い気がします（するだけ，たぶんそう？）！],
+#slide(title: [大宮祭・芝浦祭での発表])[
+  #section-lead(
+    [大宮祭・芝浦祭],
+    [学祭では，原則として全員に発表してもらいます．
+
+      自分が興味を持ったテーマを，自分なりに調べてまとめ，発表する活動です．],
   )
 
   #v(.8em)
-  2. やりたいことを探せる機会が多いです！
-  #list(
-    [発表テーマ探しをしてたらいろんな分野を知れそう！],
-    [いろんな分野に興味がある人が揃っているので，たくさんお話聞けます！],
+  #grid(
+    columns: 2,
+    gutter: .8em,
+    key-point(
+      [発表の進め方],
+      [
+        - 勉強したことを形にする
+        - テーマは自分の興味から決めてよい
+        - 最初は上の学年がサポートします
+      ],
+    ),
+    key-point(
+      [補足],
+      [
+        - 資料作成は LaTeX を使用
+        - 過去資料は数理研の HP で閲覧可能
+        - 1 年生は芝浦祭からでも OK
+      ],
+    ),
+  )
+]
+
+#slide(title: [過去の発表テーマ例])[
+  #section-lead(
+    [テーマはかなり自由です],
+    [かなり幅広いテーマで発表しています．
+
+      専門的でも，身近な疑問から入る形でも大丈夫です．],
+  )
+
+  #v(.9em)
+  #grid(
+    columns: 2,
+    gutter: .8em,
+    soft-card(
+      [数学寄り],
+      [
+        - クリフォード代数の定義
+        - $n$ 次元立体角における直角の定義
+        - 四元数函数と微分可能性
+      ],
+    ),
+    soft-card(
+      [応用・計算寄り],
+      [
+        - 月最大降雨量の確率密度関数
+        - 大きい数が素数かどうか判定するアプローチ
+      ],
+    ),
+  )
+]
+
+#slide(title: [懸賞問題作成])[
+  #section-lead(
+    [学祭企画のひとつ],
+    [大宮祭・芝浦祭では，お客さんに実際に解いてもらう懸賞問題も作成します．],
   )
 
   #v(.8em)
-  3. お勉強が好きな人や頑張りたいって人が多いので，モチベあがります！
-  #list(
-    [みんなを見てたらやる気になるかも！],
+  #lead-card(
+    [どんな問題？],
+    [
+      - 難しい知識が必要というより「頭をひねる」タイプ
+      - 学祭前になると準備が活発になります
+      - 発表とは違う形で数理の面白さを伝えられます
+    ],
+    fill: warm-soft,
+    stroke-color: rgb("#d97706"),
+  )
+]
+
+#slide(title: [勉強会])[
+  #section-lead(
+    [みんなで進める学習],
+    [自分が勉強したい本や分野でメンバーを募って，勉強会や輪講を行えます．
+
+      授業内容の復習や発展でも問題ありません．],
+  )
+
+  #v(.8em)
+  #grid(
+    columns: 2,
+    gutter: .8em,
+    soft-card(
+      [進め方],
+      [
+        - わからないところは共有して助け合う
+        - まずは自分たちでノートや本と向き合う
+        - 上の学年も必要に応じてサポート
+      ],
+    ),
+    soft-card(
+      [時間の使い方],
+      [
+        - 基本は部会の時間を利用
+        - 別の時間に集まっても OK
+        - 少人数でも気軽に始められます
+      ],
+    ),
+  )
+]
+
+#slide(title: [ノートまとめ])[
+  #section-lead(
+    [LaTeX に慣れる練習],
+    [授業ノートを LaTeX でまとめる活動も勧めています．
+
+      慣れが必要なので，早めに触っておくのが大事です．],
+  )
+
+  #v(.8em)
+  #lead-card(
+    [こんな狙いがあります],
+    [
+      - 書かないと忘れるので，継続のきっかけになる
+      - 添削も予定している
+      - 微積や数学基礎あたりのノートが始めやすそう
+    ],
+  )
+]
+
+#slide(title: [夏合宿（春合宿）])[
+  #section-lead(
+    [勉強＋交流のイベント],
+    [夏休みには合宿を企画しています．
+
+      勉強だけでなく，部員同士の親睦を深める目的も大きいイベントです．],
+  )
+
+  #v(.8em)
+  - 夏合宿は企画予定
+  - 詳細はこれから決定
+  - 希望があればぜひ聞かせてください
+  - 春合宿は，参加希望者が多ければ検討します
+]
+
+#slide(title: [コンテスト系])[
+  #lead-card(
+    [外部チャレンジも応援します],
+    [サイエンスインカレなど，外部コンテストに挑戦したい人がいれば数理研として応援します．興味がある段階でも相談して大丈夫です．],
+  )
+]
+
+#slide(title: [数理研に入って嬉しいこと])[
+  #grid(
+    columns: 3,
+    gutter: .8em,
+    soft-card(
+      [1. 仲間が見つかる],
+      [数理科学科の人が多く，似た関心を持つ人と出会いやすいです．],
+    ),
+    soft-card(
+      [2. 興味を広げやすい],
+      [発表テーマ探しや雑談から，知らなかった分野に触れる機会が多いです．],
+    ),
+    soft-card(
+      [3. 勉強の勢いが出る],
+      [勉強が好きな人，頑張りたい人が多いので，自然とモチベーションが上がります．],
+    ),
   )
 ]
 
 #slide(title: [入部したいかも！と思ったら])[
-  1. 4 月いっぱい（5 月の上旬も多分）仮入部期間です．
-  #list(
-    [ぜひ部会に顔を出してみてください．],
-    [部会の雰囲気が知れます．],
-  )
+  #grid(
+    columns: 3,
+    gutter: .8em,
+    key-point(
+      [1. まずは仮入部],
+      [
+        5月上旬まで
 
-  #v(.8em)
-  2. 数理研の Discord に招待します．
-  #list(
-    [数理研は基本的に連絡を Discord にて行っています．],
-    [仮入部期間の予定などはここで流す予定です（X などでも流すように心がけます）．],
-    [仮入部のロール付与になるのでお気軽に！],
-  )
+        部会に顔を出してみてください．
 
-  #v(.8em)
-  3. 本入部の詳細は 5 月上旬にお知らせします．
-  #list(
-    [時期はまだ未定です...ごめんね],
+        雰囲気がわかります．
+      ],
+    ),
+    key-point(
+      [2. Discord に招待],
+      [
+        連絡は基本的にDiscordで行います．
+
+        仮入部期間の予定もここで流す予定です．
+      ],
+    ),
+    key-point(
+      [3. 本入部の案内],
+      [
+        詳細は 5 月上旬にお知らせします．
+        時期はまだ未定です．
+      ],
+    ),
   )
 ]
 
-#slide(title: [仮入部期間の部会の活動])[
-  #enum(
-    [部員が自己紹介します．],
-    [部員が自分の興味のある分野，大宮祭の研究テーマなどを発表します．],
-    [あとなんだろ],
+#slide(title: [仮入部期間の部会予定])[
+  #section-lead(
+    [まずはここから],
+    [仮入部期間の部会では，サークル紹介だけでなく，部員がどんなことに興味を持っているかも知れるようにします．],
   )
+
+  #v(.8em)
+  - #schedule-item([4/20], [数理研の紹介と数学の小話])
+  - #schedule-item([4/27], [各部員の興味のある分野の紹介（自己紹介）])
 ]
 
 #slide(title: [LaTeX 講座のお知らせ])[
-  #list(
-    [5/5（月）（GW 最終日，オンデマンド授業実施日），時間未定，教室未定],
-    [LaTeX の使い方，1 から手取り足取り教えます！],
-    [PC さえあれば OK],
-    [まずは導入...],
-  )
-
-  #v(1em)
-
-  #list(
-    [5/12（月）6 限，教室未定],
-    [授業でも少しずつ LaTeX に触り，なんとなくわかってきたようなわからないような...],
-    [そんな皆さんの質問にお答えします！],
-    [よくわかっていないところをすべてもってきちゃってください！解決しましょう！],
+  #grid(
+    columns: 2,
+    gutter: .8em,
+    lead-card(
+      [5/9（土）13:00〜 9333 教室],
+      [
+        - LaTeX の使い方を 1 から説明します
+        - PC さえあれば参加 OK
+      ],
+    ),
+    lead-card(
+      [5/25（月）6 限 教室未定],
+      [
+        - 授業で触れて「なんとなくわかる」を整理する回
+        - わからないところを持ってきてもらえれば一緒に解決します
+      ],
+      fill: warm-soft,
+      stroke-color: rgb("#d97706"),
+    ),
   )
 ]
 
 #slide(title: [そもそも LaTeX ってなに？])[
   #lead-card(
     [ひとことで言うと],
-    [
-      数式などを含む文書をいい感じに書けるツールです．
-    ],
+    [数式などを含む文書を，きれいに・整った形で書けるツールです．],
   )
 
   #v(.8em)
@@ -217,10 +458,8 @@
     integral_(-infinity)^infinity e^(-a t^2) dif t = sqrt(pi / a)
   $
 
-  #v(.8em)
-
-  などがこんな感じにきれいに書けます．
-  ちなみにこれは，
+  #v(.75em)
+  こんな数式を自然に書けます．実際には，例えば次のようなコードで表現します．
 
   #raw(
     "\\begin{align*}\n\\sum_{k=1}^{\\infty}\\frac{1}{k^2}=\\frac{\\pi^2}{6}\n\\int_{-\\infty}^{\\infty}e^{-at^2}dt=\\sqrt{\\frac{\\pi}{a}}\n\\end{align*}",
@@ -228,11 +467,74 @@
     lang: "tex",
   )
 
-  などと書いています．このスライドも LaTeX を使って作成しています．
-
+  #v(.65em)
   #list(
-    [数理の人は卒論で LaTeX 必須らしいです．],
-    [早くから慣れておけば，とっても良いスタートがきれます！],
-    [授業ノートやレポート作成などで使いこなしちゃおう！],
+    [数理の人は卒論でも LaTeX を使うことが多いです],
+    [早くから慣れておくと，その後かなり楽になります],
+    [授業ノートやレポート作成にも使えます],
+  )
+]
+
+#slide(title: [今後の新歓日程])[
+  #grid(
+    columns: 2,
+    gutter: .8em,
+    soft-card(
+      [部会（月曜 5・6 限）],
+      [
+        - 4/27 各部員の興味のある分野の紹介（自己紹介）
+        - 5/11
+      ],
+    ),
+    soft-card(
+      [LaTeX 講座],
+      [
+        - 5/9（土）13:00〜 9333 教室
+        - 5/25（月）6 限 教室未定
+      ],
+    ),
+  )
+]
+
+#slide(title: [仮入部について])[
+  #grid(
+    columns: (4.6fr, 1.3fr),
+    column-gutter: 1em,
+    row-gutter: 0em,
+    [
+      #text(size: 1.45em, weight: "regular")[仮入部の手順]
+
+      #v(.42em)
+      #line(length: 100%, stroke: 1.2pt + accent)
+      #v(.22em)
+      #text(size: .95em)[手順①: QR コードから Discord サーバーに入る]
+
+      #v(.14em)
+      #line(length: 100%, stroke: 1.2pt + accent)
+      #v(.22em)
+      #text(size: .95em)[手順②: サーバーネームを「名前 / 学番」にする]
+
+      #v(.14em)
+      #line(length: 100%, stroke: 1.2pt + accent)
+      #v(.22em)
+      #text(size: .95em)[手順③: チャンネルの使い方を確認する]
+
+      #v(.14em)
+      #line(length: 100%, stroke: 1.2pt + accent)
+      #v(.16em)
+      #grid(
+        columns: (auto, auto, auto),
+        column-gutter: .08em,
+        row-gutter: 0em,
+        align(center + horizon)[#text(size: 1.02em, weight: "medium")[手順④: 確認できたら]],
+        align(center + horizon)[#image("haaku.png", height: .74em)],
+        align(center + horizon)[#text(size: 1.02em, weight: "medium")[を押す]],
+      )
+    ],
+    [
+      #align(center + top)[
+        #image("QR_322564.png", width: 1.55in)
+      ]
+    ],
   )
 ]
