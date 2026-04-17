@@ -4,17 +4,20 @@
 
 #import "@preview/numbly:0.1.0": numbly
 
-#let accent = rgb("#0f766e")
-#let accent-deep = rgb("#134e4a")
-#let accent-soft = rgb("#dff5f1")
-#let accent-pale = rgb("#eefaf7")
-#let warm-soft = rgb("#fff3e8")
-#let surface = rgb("#fbfffe")
-#let text-strong = rgb("#102027")
-#let text-soft = rgb("#3c5258")
+#let accent = rgb("#204C3B")
+#let accent-deep = rgb("#183A2D")
+#let accent-soft = rgb("#e3eee8")
+#let accent-pale = rgb("#f1f6f3")
+#let warm-soft = rgb("#e8f1ec")
+#let surface = rgb("#fafcfb")
+#let text-strong = rgb("#18322b")
+#let text-soft = rgb("#4a5e58")
+#let border-soft = rgb("#d6e4de")
+#let border-pale = rgb("#e3eee8")
+#let accent-alt = rgb("#5f7e72")
 
-#let theorem-fill = rgb("#edf7f5")
-#let remark-fill = rgb("#fff1e8")
+#let theorem-fill = accent-soft
+#let remark-fill = warm-soft
 
 #let theorem = thmbox("theorem", "Thm", fill: theorem-fill)
 #let lemma = thmbox("theorem", "Lem", fill: theorem-fill)
@@ -25,30 +28,46 @@
 #let proof = thmproof("proof", "Proof", base: "theorem")
 #let Proposition = thmbox("Proposition", "Prop", fill: theorem-fill)
 
+#let TeX = box[T#h(-0.2em)#text(baseline: 0.2em)[E]#h(-0.1em)X]
+#let LaTeX = box[L#h(-0.3em)#text(size: 0.7em, baseline: -0.3em)[A]#h(-0.1em)#TeX]
+
+#let title-chip(label, fill: accent-soft, text-fill: accent-deep) = box(
+  inset: (x: .55em, y: .18em),
+  radius: 999pt,
+  fill: fill,
+  stroke: none,
+  text(size: .78em, weight: "semibold", fill: text-fill)[#label],
+)
+
 #let lead-card(title, body, fill: accent-soft, stroke-color: accent) = block(
   width: 100%,
-  inset: 1.05em,
-  radius: .55em,
+  inset: 1.0em,
+  radius: .65em,
   fill: fill,
-  stroke: (left: .28em + stroke-color),
+  stroke: (
+    left: .26em + stroke-color,
+    top: .8pt + border-soft,
+    right: .8pt + border-soft,
+    bottom: .8pt + border-soft,
+  ),
   [
     #set text(fill: text-strong)
-    #text(weight: "semibold")[#title]
-    #v(.4em)
+    #title-chip(title, fill: white)
+    #v(.42em)
     #body
   ],
 )
 
-#let soft-card(title, body) = block(
+#let soft-card(title, body, fill: white, stroke-color: border-soft) = block(
   width: 100%,
   inset: .9em,
-  radius: .45em,
-  fill: white,
-  stroke: rgb("#d7ece8"),
+  radius: .55em,
+  fill: fill,
+  stroke: .85pt + stroke-color,
   [
     #set text(fill: text-strong)
-    #text(weight: "semibold", fill: accent-deep)[#title]
-    #v(.28em)
+    #title-chip(title)
+    #v(.34em)
     #set text(size: 0.95em, fill: text-soft)
     #body
   ],
@@ -57,22 +76,42 @@
 #let key-point(title, body) = block(
   width: 100%,
   inset: .9em,
-  radius: .45em,
+  radius: .55em,
   fill: accent-pale,
-  stroke: none,
+  stroke: (
+    left: .24em + accent,
+    top: .8pt + border-pale,
+    right: .8pt + border-pale,
+    bottom: .8pt + border-pale,
+  ),
   [
-    #text(weight: "semibold", fill: accent-deep)[#title]
-    #v(.25em)
+    #title-chip(title, fill: white)
+    #v(.3em)
     #body
   ],
 )
 
-#let section-lead(kicker, body) = [
-  #text(size: .78em, weight: "semibold", fill: accent)[#kicker]
-  #v(.2em)
-  #set text(size: 1.03em)
-  #body
-]
+#let section-lead(kicker, body) = block(
+  width: 100%,
+  inset: 0pt,
+  fill: none,
+  stroke: none,
+  [
+    #title-chip(kicker)
+    #v(.32em)
+    #block(
+      width: 100%,
+      inset: .9em,
+      radius: .55em,
+      fill: surface,
+      stroke: .8pt + border-pale,
+      [
+        #set text(size: 1.03em, fill: text-strong)
+        #body
+      ],
+    )
+  ],
+)
 
 #let schedule-item(day, body) = [
   #box(
@@ -87,16 +126,25 @@
 ]
 
 #let topic-bubble(label, fill: accent-soft) = box(
-  width: 8.4em,
-  height: 8.4em,
-  inset: .75em,
+  width: 7.9em,
+  height: 7.9em,
+  inset: .7em,
   radius: 50%,
   fill: fill,
-  stroke: 1pt + rgb("#c9e7e1"),
+  stroke: 1pt + border-soft,
   align(center + horizon)[
     #set text(size: .92em, weight: "semibold", fill: accent-deep)
     #label
   ],
+)
+
+#let image-panel(path, width: 100%) = block(
+  width: 100%,
+  inset: .55em,
+  radius: .55em,
+  fill: white,
+  stroke: .85pt + border-soft,
+  align(center)[#image(path, width: width)],
 )
 
 #show: metropolis-theme.with(
@@ -130,31 +178,31 @@
 #slide(title: [数理科学研究会とは])[
   #section-lead(
     [どんなサークル？],
-    [数理科学分野に興味がある人，好きな人，勉強を頑張りたい人が集まるサークル],
+    [数理科学分野に興味がある人，好きな人，勉強を頑張りたい人が集まるサークルです．],
   )
 
-  #v(.9em)
+  #v(.65em)
+  #text(size: .8em, weight: "semibold", fill: accent)[興味のある分野はいろいろ]
+  #v(.35em)
   #align(center)[
     #grid(
       columns: 3,
-      gutter: .9em,
+      gutter: .6em,
       topic-bubble([数学]), topic-bubble([物理], fill: accent-pale), topic-bubble([プログラミング], fill: warm-soft),
     )
   ]
-
-
 ]
 
 #slide(title: [どんなことしてるの？])[
   #section-lead(
     [主な活動],
-    [数理研の活動は，定例の部会を軸に，発表・勉強・イベントなどがあります．],
+    [活動は大きく，日常の活動とイベント・発表に分かれます．],
   )
 
-  #v(.8em)
+  #v(.55em)
   #grid(
     columns: 2,
-    gutter: .8em,
+    gutter: .65em,
     soft-card(
       [日常の活動],
       [
@@ -162,6 +210,7 @@
         - 勉強会・輪講
         - ノートまとめ
       ],
+      fill: rgb("#fbfefd"),
     ),
     soft-card(
       [イベント・発表],
@@ -171,6 +220,8 @@
         - 夏合宿（春合宿）
         - コンテスト系
       ],
+      fill: warm-soft,
+      stroke-color: accent-alt,
     ),
   )
 ]
@@ -230,7 +281,7 @@
     key-point(
       [補足],
       [
-        - 資料作成は LaTeX を使用
+        - 資料作成は #LaTeX を使用
         - 過去資料は数理研の HP で閲覧可能
         - 1 年生は芝浦祭からでも OK
       ],
@@ -280,30 +331,38 @@
     [
       - 難しい知識が必要というより「頭をひねる」タイプ
       - 学祭前になると準備が活発になります
-      - 発表とは違う形で数理の面白さを伝えられます
+      - 発表とは違う形で数学の面白さを伝えられます
     ],
     fill: warm-soft,
-    stroke-color: rgb("#d97706"),
+    stroke-color: accent-alt,
   )
 ]
 
-#slide(title: [勉強会])[
-  #section-lead(
-    [みんなで進める学習],
-    [自分が勉強したい本や分野でメンバーを募って，勉強会や輪講を行えます．
-
-      授業内容の復習や発展でも問題ありません．],
-  )
-
-  #v(.8em)
+#slide(title: [実際に配布した問題])[
   #grid(
     columns: 2,
     gutter: .8em,
+    image-panel("problem1.png"), image-panel("problem2.png"),
+  )
+]
+
+#slide(title: [勉強会・輪講])[
+  #title-chip([みんなで進める学習])
+  #v(.25em)
+  #set text(size: .97em)
+  自分が勉強したい本や分野でメンバーを募って，勉強会や輪講を行えます．
+
+  授業内容の復習や発展でも問題ありません．
+
+  #v(.45em)
+  #grid(
+    columns: 2,
+    gutter: .65em,
     soft-card(
       [進め方],
       [
-        - わからないところは共有して助け合う
-        - まずは自分たちでノートや本と向き合う
+        - わからないところは共有し助け合う
+        - まずは自身でノートや本と向き合う
         - 上の学年も必要に応じてサポート
       ],
     ),
@@ -316,12 +375,28 @@
       ],
     ),
   )
+
+  #v(.4em)
+  #block(
+    width: 100%,
+    inset: .5em,
+    radius: .45em,
+    fill: accent-pale,
+    stroke: (left: .24em + accent),
+    [
+      #set text(size: .9em)
+      昨年は #text(weight: "semibold")[微分積分]，
+      #text(weight: "semibold")[線形代数]，
+      #text(weight: "semibold")[集合と位相]
+      について勉強会・輪講を行いました．
+    ],
+  )
 ]
 
 #slide(title: [ノートまとめ])[
   #section-lead(
-    [LaTeX に慣れる練習],
-    [授業ノートを LaTeX でまとめる活動も勧めています．
+    [#LaTeX に慣れる練習],
+    [授業ノートを #LaTeX でまとめる活動も勧めています．
 
       慣れが必要なので，早めに触っておくのが大事です．],
   )
@@ -332,7 +407,7 @@
     [
       - 書かないと忘れるので，継続のきっかけになる
       - 添削も予定している
-      - 微積や数学基礎あたりのノートが始めやすそう
+      - 微分積分のノートが始めやすそう
     ],
   )
 ]
@@ -346,10 +421,15 @@
   )
 
   #v(.8em)
-  - 夏合宿は企画予定
-  - 詳細はこれから決定
-  - 希望があればぜひ聞かせてください
-  - 春合宿は，参加希望者が多ければ検討します
+  #lead-card(
+    [予定していること],
+    [
+      - 夏合宿は企画予定
+      - 詳細はこれから決定
+      - 希望があればぜひ聞かせてください
+      - 春合宿は，参加希望者が多ければ検討します
+    ],
+  )
 ]
 
 #slide(title: [コンテスト系])[
@@ -357,97 +437,65 @@
     [外部チャレンジも応援します],
     [サイエンスインカレなど，外部コンテストに挑戦したい人がいれば数理研として応援します．興味がある段階でも相談して大丈夫です．],
   )
+  #v(.8em)
+  #lead-card(
+    [競技プログラミング歓迎],
+    [部員の中で競技プログラミングが流行っている(諸説あり)ので是非やりましょう],
+    fill: warm-soft,
+    stroke-color: accent-alt,
+  )
 ]
 
 #slide(title: [数理研に入って嬉しいこと])[
-  #grid(
-    columns: 3,
-    gutter: .8em,
-    soft-card(
-      [1. 仲間が見つかる],
-      [数理科学科の人が多く，似た関心を持つ人と出会いやすいです．],
-    ),
-    soft-card(
-      [2. 興味を広げやすい],
-      [発表テーマ探しや雑談から，知らなかった分野に触れる機会が多いです．],
-    ),
-    soft-card(
-      [3. 勉強の勢いが出る],
-      [勉強が好きな人，頑張りたい人が多いので，自然とモチベーションが上がります．],
-    ),
+  #soft-card(
+    [1. 仲間が見つかる],
+    [数理科学科の人が多く，似た関心を持つ人と出会いやすいです．],
+  )
+
+  #v(.55em)
+  #soft-card(
+    [2. 興味を広げやすい],
+    [発表テーマ探しや雑談から，知らなかった分野に触れる機会が多いです．],
+    fill: rgb("#fbfefd"),
+  )
+
+  #v(.55em)
+  #soft-card(
+    [3. 勉強の勢いが出る],
+    [勉強が好きな人，頑張りたい人が多いので，自然とモチベーションが上がります．],
+    fill: warm-soft,
+    stroke-color: accent-alt,
   )
 ]
 
-#slide(title: [入部したいかも！と思ったら])[
-  #grid(
-    columns: 3,
-    gutter: .8em,
-    key-point(
-      [1. まずは仮入部],
-      [
-        5月上旬まで
 
-        部会に顔を出してみてください．
 
-        雰囲気がわかります．
-      ],
-    ),
-    key-point(
-      [2. Discord に招待],
-      [
-        連絡は基本的にDiscordで行います．
-
-        仮入部期間の予定もここで流す予定です．
-      ],
-    ),
-    key-point(
-      [3. 本入部の案内],
-      [
-        詳細は 5 月上旬にお知らせします．
-        時期はまだ未定です．
-      ],
-    ),
-  )
-]
-
-#slide(title: [仮入部期間の部会予定])[
-  #section-lead(
-    [まずはここから],
-    [仮入部期間の部会では，サークル紹介だけでなく，部員がどんなことに興味を持っているかも知れるようにします．],
+#slide(title: [LaTeX 講座のお知らせ])[
+  #lead-card(
+    [5/9（土）13:00〜 9333 教室],
+    [
+      - #LaTeX の使い方を 1 から説明します
+      - PC さえあれば参加 OK
+      - 本入部を考えている人は基本参加必須
+    ],
   )
 
   #v(.8em)
-  - #schedule-item([4/20], [数理研の紹介と数学の小話])
-  - #schedule-item([4/27], [各部員の興味のある分野の紹介（自己紹介）])
-]
-
-#slide(title: [LaTeX 講座のお知らせ])[
-  #grid(
-    columns: 2,
-    gutter: .8em,
-    lead-card(
-      [5/9（土）13:00〜 9333 教室],
-      [
-        - LaTeX の使い方を 1 から説明します
-        - PC さえあれば参加 OK
-      ],
-    ),
-    lead-card(
-      [5/25（月）6 限 教室未定],
-      [
-        - 授業で触れて「なんとなくわかる」を整理する回
-        - わからないところを持ってきてもらえれば一緒に解決します
-      ],
-      fill: warm-soft,
-      stroke-color: rgb("#d97706"),
-    ),
+  #lead-card(
+    [5/25（月）6 限 教室未定],
+    [
+      - 授業で触れて「なんとなくわかる」を整理する回
+      - わからないところを持ってきてもらえれば一緒に解決します
+    ],
+    fill: warm-soft,
+    stroke-color: accent-alt,
   )
 ]
 
 #slide(title: [そもそも LaTeX ってなに？])[
   #lead-card(
     [クイズ],
-    [A と B のうち，どちらが `tex` で書いたもので，どちらが Word で作ったものでしょう？],
+    [AとBのどちらが #LaTeX で書かれたものでしょう？],
   )
 
   #v(.8em)
@@ -457,57 +505,91 @@
     soft-card(
       [A],
       [
-        #raw(
-          "$\n  sum_(k = 1)^infinity 1/k^2 = pi^2 / 6\n  quad\n  integral_(-infinity)^infinity e^(-a t^2) dif t = sqrt(pi / a)\n$",
-          block: true,
-          lang: "typ",
-        )
+        $
+          sum_(k=1)^(infinity) 1/k^2 = pi^2/6, quad integral_(-infinity)^(infinity) e^(-a t^2) dif t = sqrt(pi / a)
+        $
+        $
+          1/(2pi i) integral.cont_C f(z) dif z = sum_(k=1)^n text("Res")(f, a_k)
+        $
       ],
     ),
     soft-card(
       [B],
       [
-        #align(center)[#image("dirty.png", width: 100%)]
+        #align(center)[#image("dirty.png", width: 80%)]
       ],
     ),
   )
 
   #v(.7em)
   #key-point(
-    [答え],
-    [A のように `tex` のコードで数式を書くのが LaTeX です．
-    LaTeX は，数式や文章を「見た目」ではなく「記述」で作るので，修正しやすく，整った文書を作りやすいのが強みです．],
+    [答え：A],
+    [#LaTeX は数式を含む文書をきれいに書くためのツール．
+
+      - 数理科学課程の卒論は基本的に #LaTeX が必須らしい
+      - 数理研の学祭の発表資料も #LaTeX で書きます
+
+      ちなみに先ほどの数式は次のように書いています．
+
+      ```latex
+      \sum_{k=1}^{\infty} \frac{1}{k^2} = \frac{\pi^2}{6},
+      \quad
+      \int_{-\infty}^{\infty} e^{-a t^2}\,dt = \sqrt{\frac{\pi}{a}}
+
+      \frac{1}{2\pi i}\int_C f(z)\,dz= \sum_{k=1}^n \operatorname{Res}(f, a_k)
+      ```
+    ],
   )
 ]
 
 #slide(title: [今後の新歓日程])[
+  #text(size: .8em, weight: "semibold", fill: accent)[直近の予定]
+  #v(.4em)
   #grid(
     columns: 2,
     gutter: .8em,
     soft-card(
-      [部会（月曜 5・6 限）],
+      [部会（月曜 5・6 限）2308教室],
       [
-        - 4/27 各部員の興味のある分野の紹介（自己紹介）
-        - 5/11
+        - 4/27： 各部員の興味のある分野の紹介
+        - 5/11：(内容未定)
       ],
     ),
     soft-card(
-      [LaTeX 講座],
+      [#LaTeX 講座],
       [
-        - 5/9（土）13:00〜 9333 教室
-        - 5/25（月）6 限 教室未定
+        - 5/9（土）
+          時間: 13:00〜
+          教室: 9333
+
+        - 5/25（月）
+          時間: 6 限
+          教室: 未定
       ],
     ),
+  )
+
+
+  #key-point(
+    [本入部について],
+    [
+      #set text(size: .95em)
+      5/9 の #LaTeX 講座から，本入部の受付を始めます．
+
+      本入部を考えている人は，ぜひ 5/9 の #LaTeX 講座に来てください．
+
+      (例年#LaTeX 講座の終わった後はご飯会をやっています)
+    ],
   )
 ]
 
 #slide(title: [仮入部について])[
   #grid(
-    columns: (4.6fr, 1.3fr),
+    columns: (4.2fr, 1.5fr),
     column-gutter: 1em,
     row-gutter: 0em,
     [
-      #text(size: 1.45em, weight: "regular")[仮入部の手順]
+      #title-chip([仮入部の手順])
 
       #v(.42em)
       #line(length: 100%, stroke: 1.2pt + accent)
@@ -517,7 +599,9 @@
       #v(.14em)
       #line(length: 100%, stroke: 1.2pt + accent)
       #v(.22em)
-      #text(size: .95em)[手順②: サーバーネームを「名前 / 学番」にする]
+      #text(size: .95em)[手順②: サーバーネームを「名前 / 学番」にする
+
+        例：古寺爽楽/bv24044]
 
       #v(.14em)
       #line(length: 100%, stroke: 1.2pt + accent)
