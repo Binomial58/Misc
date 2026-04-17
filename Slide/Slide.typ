@@ -446,32 +446,37 @@
 
 #slide(title: [そもそも LaTeX ってなに？])[
   #lead-card(
-    [ひとことで言うと],
-    [数式などを含む文書を，きれいに・整った形で書けるツールです．],
+    [クイズ],
+    [A と B のうち，どちらが `tex` で書いたもので，どちらが Word で作ったものでしょう？],
   )
 
   #v(.8em)
-
-  $
-    sum_(k = 1)^infinity 1/k^2 = pi^2 / 6
-    quad
-    integral_(-infinity)^infinity e^(-a t^2) dif t = sqrt(pi / a)
-  $
-
-  #v(.75em)
-  こんな数式を自然に書けます．実際には，例えば次のようなコードで表現します．
-
-  #raw(
-    "\\begin{align*}\n\\sum_{k=1}^{\\infty}\\frac{1}{k^2}=\\frac{\\pi^2}{6}\n\\int_{-\\infty}^{\\infty}e^{-at^2}dt=\\sqrt{\\frac{\\pi}{a}}\n\\end{align*}",
-    block: true,
-    lang: "tex",
+  #grid(
+    columns: (1.15fr, .85fr),
+    gutter: .9em,
+    soft-card(
+      [A],
+      [
+        #raw(
+          "$\n  sum_(k = 1)^infinity 1/k^2 = pi^2 / 6\n  quad\n  integral_(-infinity)^infinity e^(-a t^2) dif t = sqrt(pi / a)\n$",
+          block: true,
+          lang: "typ",
+        )
+      ],
+    ),
+    soft-card(
+      [B],
+      [
+        #align(center)[#image("dirty.png", width: 100%)]
+      ],
+    ),
   )
 
-  #v(.65em)
-  #list(
-    [数理の人は卒論でも LaTeX を使うことが多いです],
-    [早くから慣れておくと，その後かなり楽になります],
-    [授業ノートやレポート作成にも使えます],
+  #v(.7em)
+  #key-point(
+    [答え],
+    [A のように `tex` のコードで数式を書くのが LaTeX です．
+    LaTeX は，数式や文章を「見た目」ではなく「記述」で作るので，修正しやすく，整った文書を作りやすいのが強みです．],
   )
 ]
 
