@@ -622,7 +622,7 @@
     ],
     [
       #align(center + top)[
-        #image("QR_322564.png", width: 1.55in)
+        #image("QR_322564.png", width: 2.5in)
       ]
     ],
   )
